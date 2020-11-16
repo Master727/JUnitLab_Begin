@@ -44,4 +44,49 @@ public class GiftCardTest
         assertEquals("deduct(10.00)", 
                      string, card.deduct(10.0));
     }
+    @Test
+    public void deduct_AmountDue()
+    {
+        double balance = 100.00;        
+        GiftCard card;
+        int issuingStore = 1337;
+        String string;
+        card = new GiftCard(issuingStore, balance);
+
+        string = "Amount Due: " + String.format("%6.2f", 10.00);
+        assertEquals("deduct 110.00 from 100.00", 
+                     string, card.deduct(110.0));
+    }
+
+    @Test
+    public void deduct_InvalidTransaction()
+    {
+        double balance = 100.00;        
+        GiftCard card;
+        int issuingStore = 1337;
+        String string;
+        card = new GiftCard(issuingStore, balance);
+
+        string = "Invalid Transaction";
+        assertEquals("deduct -10.00 from 100.00", 
+                     string, card.deduct(-10.0));
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_IncorrectBalance() throws IllegalArgumentException
+    {
+        new GiftCard(1, -100.00);
+    }
+  
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_IncorrectID_Low()
+    {
+        new GiftCard(-1, 100.00);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_IncorrectID_High()
+    {
+        new GiftCard(100000, 100.00);
+    }
 }
